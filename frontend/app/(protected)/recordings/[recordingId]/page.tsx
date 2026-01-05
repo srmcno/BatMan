@@ -1,10 +1,13 @@
-import { useParams } from 'react-router-dom';
+'use client';
+
+import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { recordingsApi, classificationsApi } from '../lib/api';
-import Spectrogram3D from '../components/Spectrogram3D';
+import { recordingsApi, classificationsApi } from '@/lib/api';
+import Spectrogram3D from '@/components/Spectrogram3D';
 
 export default function RecordingDetail() {
-  const { recordingId } = useParams<{ recordingId: string }>();
+  const params = useParams()
+  const recordingId = params.recordingId as string;
 
   const { data: recording } = useQuery({
     queryKey: ['recording', recordingId],
@@ -33,7 +36,7 @@ export default function RecordingDetail() {
       {/* 3D Spectrogram */}
       <div className="card mb-8">
         <h2 className="text-lg font-semibold text-white mb-4">Spectrogram</h2>
-        <Spectrogram3D />
+        <Spectrogram3D data={null} />
       </div>
 
       {/* Classifications */}

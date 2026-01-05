@@ -1,10 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
 import { PlusIcon, FolderIcon, TrashIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { projectsApi } from '../lib/api';
+import { projectsApi } from '@/lib/api';
 
 export default function Projects() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -98,7 +100,7 @@ export default function Projects() {
           {projects.map((project: any) => (
             <div key={project.id} className="card group">
               <div className="flex items-start justify-between">
-                <Link to={`/projects/${project.id}`} className="flex-1">
+                <Link href={`/projects/${project.id}`} className="flex-1">
                   <h3 className="text-lg font-semibold text-white group-hover:text-primary-400 transition-colors">
                     {project.name}
                   </h3>

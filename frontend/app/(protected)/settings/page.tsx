@@ -1,5 +1,6 @@
+'use client';
+
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import {
   UserCircleIcon,
   BellIcon,
@@ -9,7 +10,7 @@ import {
   CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '@/stores/authStore';
 
 type SettingsTab = 'profile' | 'notifications' | 'processing' | 'appearance' | 'security' | 'sync';
 

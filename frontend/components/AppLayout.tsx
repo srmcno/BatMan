@@ -1,9 +1,11 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+'use client';
+
+import { useRouter, usePathname } from 'next/navigation';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import Link from 'next/link';
 import {
   Bars3Icon,
-  XMarkIcon,
   HomeIcon,
   FolderIcon,
   ClipboardDocumentCheckIcon,
@@ -11,7 +13,7 @@ import {
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '@/stores/authStore';
 import clsx from 'clsx';
 
 const navigation = [
@@ -22,14 +24,15 @@ const navigation = [
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
 ];
 
-export default function Layout() {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    router.push('/login');
   };
 
   return (
@@ -70,21 +73,19 @@ export default function Layout() {
                         <ul className="-mx-2 space-y-1">
                           {navigation.map((item) => (
                             <li key={item.name}>
-                              <NavLink
-                                to={item.href}
+                              <Link
+                                href={item.href}
                                 onClick={() => setSidebarOpen(false)}
-                                className={({ isActive }) =>
-                                  clsx(
-                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium',
-                                    isActive
-                                      ? 'bg-gray-800 text-white'
-                                      : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                                  )
-                                }
+                                className={clsx(
+                                  'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium',
+                                  pathname === item.href
+                                    ? 'bg-gray-800 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                                )}
                               >
                                 <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                                 {item.name}
-                              </NavLink>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -110,20 +111,18 @@ export default function Layout() {
                 <ul className="-mx-2 space-y-1">
                   {navigation.map((item) => (
                     <li key={item.name}>
-                      <NavLink
-                        to={item.href}
-                        className={({ isActive }) =>
-                          clsx(
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium',
-                            isActive
-                              ? 'bg-gray-800 text-white'
-                              : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                          )
-                        }
+                      <Link
+                        href={item.href}
+                        className={clsx(
+                          'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium',
+                          pathname === item.href
+                            ? 'bg-gray-800 text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                        )}
                       >
                         <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                         {item.name}
-                      </NavLink>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -165,9 +164,7 @@ export default function Layout() {
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="p-6">
-            <Outlet />
-          </div>
+          <div className="p-6">{children}</div>
         </main>
       </div>
     </div>

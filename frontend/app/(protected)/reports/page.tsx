@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {
@@ -8,7 +10,7 @@ import {
   FunnelIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { reportsApi, projectsApi } from '../lib/api';
+import { reportsApi, projectsApi } from '@/lib/api';
 
 type ReportType = 'diversity' | 'activity' | 'nabat' | 'summary';
 
@@ -32,21 +34,21 @@ export default function Reports() {
 
   const { data: diversityData, isLoading: diversityLoading } = useQuery({
     queryKey: ['reports', 'diversity', config.project_id, config.site_id],
-    queryFn: () => reportsApi.getDiversity(config.project_id, config.site_id),
+    queryFn: () => reportsApi.getDiversity(config.project_id!, config.site_id),
     enabled: activeReport === 'diversity' && !!config.project_id,
   });
 
   const { data: activityData, isLoading: activityLoading } = useQuery({
     queryKey: ['reports', 'activity', config.project_id, config.site_id],
-    queryFn: () => reportsApi.getActivitySummary(config.project_id, config.site_id),
+    queryFn: () => reportsApi.getActivity(config.project_id!),
     enabled: activeReport === 'activity' && !!config.project_id,
   });
 
   const exportNabatMutation = useMutation({
-    mutationFn: ({ projectId, siteId }: { projectId: string; siteId?: string }) =>
-      reportsApi.exportNabat(projectId, siteId),
-    onSuccess: (blob) => {
-      const url = URL.createObjectURL(blob);
+    mutationFn: ({ projectId }: { projectId: string }) =>
+      reportsApi.exportNabat(projectId),
+    onSuccess: (response) => {
+      const url = URL.createObjectURL(response.data);
       const a = document.createElement('a');
       a.href = url;
       a.download = `nabat_export_${new Date().toISOString().split('T')[0]}.csv`;
@@ -60,10 +62,10 @@ export default function Reports() {
   });
 
   const exportSummaryMutation = useMutation({
-    mutationFn: ({ projectId, siteId }: { projectId: string; siteId?: string }) =>
-      reportsApi.exportSummary(projectId, siteId),
-    onSuccess: (blob) => {
-      const url = URL.createObjectURL(blob);
+    mutationFn: ({ projectId }: { projectId: string }) =>
+      reportsApi.exportSummary(projectId),
+    onSuccess: (response) => {
+      const url = URL.createObjectURL(response.data);
       const a = document.createElement('a');
       a.href = url;
       a.download = `summary_${new Date().toISOString().split('T')[0]}.csv`;
@@ -90,9 +92,9 @@ export default function Reports() {
     }
 
     if (activeReport === 'nabat') {
-      exportNabatMutation.mutate({ projectId: config.project_id, siteId: config.site_id });
+      exportNabatMutation.mutate({ projectId: config.project_id! });
     } else if (activeReport === 'summary') {
-      exportSummaryMutation.mutate({ projectId: config.project_id, siteId: config.site_id });
+      exportSummaryMutation.mutate({ projectId: config.project_id! });
     }
   };
 

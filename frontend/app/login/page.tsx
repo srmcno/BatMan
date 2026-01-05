@@ -1,16 +1,18 @@
+'use client';
+
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { authApi } from '../lib/api';
-import { useAuthStore } from '../stores/authStore';
+import { authApi } from '@/lib/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
   const login = useAuthStore((state) => state.login);
 
   const loginMutation = useMutation({
@@ -34,7 +36,7 @@ export default function Login() {
       );
 
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      router.push('/dashboard');
     },
     onError: () => {
       toast.error('Invalid email or password');

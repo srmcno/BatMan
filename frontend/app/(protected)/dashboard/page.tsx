@@ -1,5 +1,7 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
   FolderIcon,
   MusicalNoteIcon,
@@ -7,7 +9,7 @@ import {
   ClipboardDocumentCheckIcon,
   ArrowTrendingUpIcon,
 } from '@heroicons/react/24/outline';
-import { projectsApi, classificationsApi } from '../lib/api';
+import { projectsApi, classificationsApi } from '@/lib/api';
 
 interface StatCardProps {
   title: string;
@@ -105,11 +107,11 @@ export default function Dashboard() {
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4">
-            <Link to="/projects" className="btn-secondary">
+            <Link href="/projects" className="btn-secondary">
               <FolderIcon className="h-5 w-5 mr-2" />
               View Projects
             </Link>
-            <Link to="/review" className="btn-primary">
+            <Link href="/review" className="btn-primary">
               <ClipboardDocumentCheckIcon className="h-5 w-5 mr-2" />
               Review Calls ({pendingCount})
             </Link>
@@ -122,7 +124,7 @@ export default function Dashboard() {
             {projects.slice(0, 3).map((project: any) => (
               <Link
                 key={project.id}
-                to={`/projects/${project.id}`}
+                href={`/projects/${project.id}`}
                 className="flex items-center justify-between p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
               >
                 <div>

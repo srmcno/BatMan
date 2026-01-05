@@ -1,13 +1,17 @@
+'use client';
+import Link from 'next/link';
+
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dialog } from '@headlessui/react';
 import { PlusIcon, MapPinIcon, MusicalNoteIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { projectsApi } from '../lib/api';
+import { projectsApi } from '@/lib/api';
 
 export default function ProjectDetail() {
-  const { projectId } = useParams<{ projectId: string }>();
+  const params = useParams()
+  const projectId = params.projectId as string;
   const [isCreateSiteOpen, setIsCreateSiteOpen] = useState(false);
   const [newSite, setNewSite] = useState({
     name: '',
@@ -71,7 +75,7 @@ export default function ProjectDetail() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-          <Link to="/projects" className="hover:text-white">
+          <Link href="/projects" className="hover:text-white">
             Projects
           </Link>
           <span>/</span>
@@ -143,13 +147,13 @@ export default function ProjectDetail() {
               </div>
               <div className="flex gap-2">
                 <Link
-                  to={`/projects/${projectId}/sites/${site.id}/recordings`}
+                  href={`/projects/${projectId}/sites/${site.id}/recordings`}
                   className="btn-secondary flex-1 text-sm"
                 >
                   View Recordings
                 </Link>
                 <Link
-                  to={`/projects/${projectId}/sites/${site.id}/recordings?upload=true`}
+                  href={`/projects/${projectId}/sites/${site.id}/recordings?upload=true`}
                   className="btn-primary text-sm"
                 >
                   <ArrowUpTrayIcon className="h-4 w-4" />
