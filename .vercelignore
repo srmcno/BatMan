@@ -11,7 +11,3 @@ Dockerfile
 
 # Ignore environment examples
 .env.example
-
-# Ignore Git files
-.git/
-.gitignore
