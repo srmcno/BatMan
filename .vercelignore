@@ -4,7 +4,6 @@ backend/
 # Ignore documentation
 docs/
 *.md
-!README.md
 
 # Ignore Docker files
 docker-compose.yml

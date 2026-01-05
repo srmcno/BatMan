@@ -4,5 +4,5 @@
   "installCommand": "cd frontend && npm install",
   "framework": "nextjs",
   "outputDirectory": "frontend/.next",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./frontend"
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD frontend/"
 }
