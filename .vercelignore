@@ -1,0 +1,18 @@
+# Ignore backend directory - deploy separately
+backend/
+
+# Ignore documentation
+docs/
+*.md
+!README.md
+
+# Ignore Docker files
+docker-compose.yml
+Dockerfile
+
+# Ignore environment examples
+.env.example
+
+# Ignore Git files
+.git/
+.gitignore
