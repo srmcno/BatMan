@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecoecho-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ecoecho}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ecoecho_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-ecoecho}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ecoecho}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ecoecho-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ecoecho-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ecoecho-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecoecho-backend
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-ecoecho}:${POSTGRES_PASSWORD:-ecoecho_secret}@postgres:5432/${POSTGRES_DB:-ecoecho}
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-super-secret-key-change-in-production}
+      - DEBUG=${DEBUG:-false}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:80}
+      - UPLOAD_DIR=/app/uploads
+      - MODEL_DIR=/app/models
+      - EXPORT_DIR=/app/exports
+    volumes:
+      - uploads_data:/app/uploads
+      - models_data:/app/models
+      - exports_data:/app/exports
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - ecoecho-network
+
+  # Frontend Web App
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecoecho-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - ecoecho-network
+
+  # Celery Worker for background tasks
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecoecho-celery-worker
+    command: celery -A app.tasks worker --loglevel=info --concurrency=4
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-ecoecho}:${POSTGRES_PASSWORD:-ecoecho_secret}@postgres:5432/${POSTGRES_DB:-ecoecho}
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-super-secret-key-change-in-production}
+      - UPLOAD_DIR=/app/uploads
+      - MODEL_DIR=/app/models
+      - EXPORT_DIR=/app/exports
+    volumes:
+      - uploads_data:/app/uploads
+      - models_data:/app/models
+      - exports_data:/app/exports
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ecoecho-network
+
+  # Celery Beat for scheduled tasks
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecoecho-celery-beat
+    command: celery -A app.tasks beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-ecoecho}:${POSTGRES_PASSWORD:-ecoecho_secret}@postgres:5432/${POSTGRES_DB:-ecoecho}
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-super-secret-key-change-in-production}
+    depends_on:
+      - redis
+      - celery-worker
+    networks:
+      - ecoecho-network
+
+networks:
+  ecoecho-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
+  models_data:
+  exports_data:
