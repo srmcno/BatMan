@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100 antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-700 text-white hover:bg-gray-600 focus:ring-gray-500;
+  }
+
+  .btn-success {
+    @apply btn bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-300 hover:bg-gray-800 focus:ring-gray-500;
+  }
+
+  .input {
+    @apply block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-300 mb-1;
+  }
+
+  .card {
+    @apply bg-gray-900 rounded-xl border border-gray-800 p-6;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-green-900 text-green-300;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-900 text-yellow-300;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-900 text-red-300;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-900 text-blue-300;
+  }
+}
+
+/* Spectrogram visualization */
+.spectrogram-container {
+  @apply relative overflow-hidden rounded-lg bg-gray-900;
+}
+
+.spectrogram-canvas {
+  @apply w-full h-full;
+}
+
+/* 3D viewer */
+.viewer-3d {
+  @apply w-full h-full min-h-[400px] rounded-lg overflow-hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 rounded-full hover:bg-gray-600;
+}
+
+/* Loading spinner */
+.spinner {
+  @apply animate-spin h-5 w-5 border-2 border-gray-600 border-t-primary-500 rounded-full;
+}
