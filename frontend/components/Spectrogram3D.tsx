@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useMemo, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -97,7 +97,7 @@ function SpectrogramMesh({
   const meshRef = useRef<THREE.Mesh>(null);
   const colorMap = colorMaps[colorScheme];
 
-  const { geometry, minMag, maxMag } = useMemo(() => {
+  const { geometry } = useMemo(() => {
     const { frequencies, times, magnitudes } = data;
     const numFreqs = frequencies.length;
     const numTimes = times.length;

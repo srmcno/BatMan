@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CheckIcon, XMarkIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { classificationsApi, speciesApi } from '@/lib/api';
+import { classificationsApi } from '@/lib/api';
 
 export default function Review() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,11 +13,6 @@ export default function Review() {
   const { data: pending, isLoading } = useQuery({
     queryKey: ['pending-review'],
     queryFn: () => classificationsApi.getPendingReview(undefined, 1, 50),
-  });
-
-  const { data: speciesList } = useQuery({
-    queryKey: ['species'],
-    queryFn: () => speciesApi.list(),
   });
 
   const vetMutation = useMutation({

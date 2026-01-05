@@ -147,13 +147,13 @@ export default function ProjectDetail() {
               </div>
               <div className="flex gap-2">
                 <Link
-                  to={`/projects/${projectId}/sites/${site.id}/recordings`}
+                  href={`/projects/${projectId}/sites/${site.id}/recordings`}
                   className="btn-secondary flex-1 text-sm"
                 >
                   View Recordings
                 </Link>
                 <Link
-                  to={`/projects/${projectId}/sites/${site.id}/recordings?upload=true`}
+                  href={`/projects/${projectId}/sites/${site.id}/recordings?upload=true`}
                   className="btn-primary text-sm"
                 >
                   <ArrowUpTrayIcon className="h-4 w-4" />

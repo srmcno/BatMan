@@ -1,8 +1,7 @@
 'use client';
-import Link from 'next/link';
 
 import { useCallback, useState } from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDropzone } from 'react-dropzone';
 import { CloudArrowUpIcon, MusicalNoteIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
@@ -10,12 +9,11 @@ import toast from 'react-hot-toast';
 import { recordingsApi, projectsApi } from '@/lib/api';
 
 export default function Recordings() {
-  const params = useParams()
-  const projectId, siteId = params.projectId, siteId as string;
-  const [searchParams] = useSearchParams();
+  const params = useParams();
+  const projectId = params.projectId as string;
+  const siteId = params.siteId as string;
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const queryClient = useQueryClient();
-  const showUpload = searchParams.get('upload') === 'true';
 
   const { data: site } = useQuery({
     queryKey: ['site', projectId, siteId],

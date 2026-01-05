@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   // This is a simplified middleware - auth checking happens on client side with Zustand
   // For production, you might want to implement server-side auth checking
   return NextResponse.next();

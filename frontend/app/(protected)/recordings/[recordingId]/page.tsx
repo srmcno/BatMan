@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
@@ -37,7 +36,7 @@ export default function RecordingDetail() {
       {/* 3D Spectrogram */}
       <div className="card mb-8">
         <h2 className="text-lg font-semibold text-white mb-4">Spectrogram</h2>
-        <Spectrogram3D />
+        <Spectrogram3D data={null} />
       </div>
 
       {/* Classifications */}

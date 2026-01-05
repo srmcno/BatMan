@@ -6,7 +6,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import {
   Bars3Icon,
-  XMarkIcon,
   HomeIcon,
   FolderIcon,
   ClipboardDocumentCheckIcon,
