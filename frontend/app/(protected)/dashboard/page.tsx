@@ -71,15 +71,15 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="mb-8">
+      <div className="mb-8 space-y-2">
         <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="mt-2 text-gray-400">
+        <p className="text-gray-400">
           Welcome to EcoEcho AI. Here's an overview of your bat monitoring data.
         </p>
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         <StatCard
           title="Active Projects"
           value={totalProjects}
@@ -106,7 +106,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/projects" className="btn-secondary">
               <FolderIcon className="h-5 w-5 mr-2" />
               View Projects

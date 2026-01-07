@@ -36,7 +36,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-950">
+    <div className="flex min-h-screen bg-gray-950">
       {/* Mobile sidebar */}
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -164,7 +164,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="p-6">{children}</div>
+          <div className="px-4 py-6 sm:px-6 lg:px-8">{children}</div>
         </main>
       </div>
     </div>

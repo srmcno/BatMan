@@ -86,20 +86,18 @@ export default function Review() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-white">Review Classifications</h1>
           <p className="mt-2 text-gray-400">
             {currentIndex + 1} of {total} calls to review
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="w-64 bg-gray-800 rounded-full h-2">
-            <div
-              className="bg-primary-500 h-2 rounded-full transition-all"
-              style={{ width: `${((currentIndex + 1) / items.length) * 100}%` }}
-            />
-          </div>
+        <div className="w-full sm:w-64 bg-gray-800 rounded-full h-2">
+          <div
+            className="bg-primary-500 h-2 rounded-full transition-all"
+            style={{ width: `${((currentIndex + 1) / items.length) * 100}%` }}
+          />
         </div>
       </div>
 
@@ -167,7 +165,7 @@ export default function Review() {
             </div>
 
             {/* Action buttons */}
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
                 onClick={handleReject}
                 disabled={vetMutation.isPending}
@@ -179,7 +177,7 @@ export default function Review() {
               <button
                 onClick={handleSkip}
                 disabled={vetMutation.isPending}
-                className="btn-secondary"
+                className="btn-secondary w-full sm:w-auto"
               >
                 <ArrowPathIcon className="h-5 w-5" />
               </button>
