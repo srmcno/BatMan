@@ -32,6 +32,12 @@ export default function Reports() {
     queryFn: () => projectsApi.list(),
   });
 
+  const { data: sites } = useQuery({
+    queryKey: ['sites', config.project_id],
+    queryFn: () => projectsApi.listSites(config.project_id!),
+    enabled: !!config.project_id,
+  });
+
   const { data: diversityData, isLoading: diversityLoading } = useQuery({
     queryKey: ['reports', 'diversity', config.project_id, config.site_id],
     queryFn: () => reportsApi.getDiversity(config.project_id!, config.site_id),
@@ -143,7 +149,11 @@ export default function Reports() {
                 disabled={!config.project_id}
               >
                 <option value="">All sites</option>
-                {/* Sites would be loaded based on selected project */}
+                {sites?.data?.map((site: { id: string; name: string }) => (
+                  <option key={site.id} value={site.id}>
+                    {site.name}
+                  </option>
+                ))}
               </select>
             </div>
 
