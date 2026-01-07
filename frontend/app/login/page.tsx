@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -14,6 +14,14 @@ export default function Login() {
   const [fullName, setFullName] = useState('');
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const hasHydrated = useAuthStore((state) => state.hasHydrated);
+
+  useEffect(() => {
+    if (hasHydrated && isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [hasHydrated, isAuthenticated, router]);
 
   const loginMutation = useMutation({
     mutationFn: () => authApi.login(email, password),
