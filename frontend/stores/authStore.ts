@@ -13,9 +13,11 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  hasHydrated: boolean;
   login: (user: User, accessToken: string, refreshToken: string) => void;
   logout: () => void;
   updateTokens: (accessToken: string, refreshToken: string) => void;
+  setHasHydrated: (hydrated: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -25,6 +27,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       isAuthenticated: false,
+      hasHydrated: false,
 
       login: (user, accessToken, refreshToken) =>
         set({
@@ -47,14 +50,23 @@ export const useAuthStore = create<AuthState>()(
           accessToken,
           refreshToken,
         }),
+
+      setHasHydrated: (hydrated) =>
+        set({
+          hasHydrated: hydrated,
+        }),
     }),
     {
       name: 'ecoecho-auth',
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       partialize: (state) => ({
         user: state.user,
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
+        hasHydrated: state.hasHydrated,
       }),
     }
   )

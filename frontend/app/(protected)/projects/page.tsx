@@ -65,7 +65,7 @@ export default function Projects() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-white">Projects</h1>
           <p className="mt-2 text-gray-400">Manage your bat survey projects</p>
